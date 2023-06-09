@@ -51,4 +51,4 @@ for (let i=1; i<=4; i++) {
 }
 
 console.log(mult);
-console.log(productOfArray); // 24  */
+console.log(productOfArray); // 24      */
