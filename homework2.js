@@ -5,20 +5,27 @@
 function durationBetweenDates(start_date = new Date(), end_date = new Date(), dimension = 'seconds') {
   const startDateObj = new Date(start_date);    // представляє початкову дату
   const endDateObj = new Date(end_date);        // представляє кінцеву дату
-
   const timeDiff = Math.abs(endDateObj - startDateObj); // обчислюється різниця між кінцевою і початковою датами (в мілісекундах)
                                                         // Math.abs знаходить більшу дату 
+  let duration;
 
   switch (dimension) {          // оператор для вибору розмірності
     case 'days':                // обчислюється кількість днів, які пройшли між датами
-      return `${Math.floor(timeDiff / (1000 * 60 * 60 * 24))} days`;
+      duration = timeDiff / (1000 * 60 * 60 * 24);
+      break;
     case 'hours':               // обчислюється кількість годин, які пройшли між датами
-      return `${Math.floor(timeDiff / (1000 * 60 * 60))} hours`;
+      duration = timeDiff / (1000 * 60 * 60);
+      break;
     case 'minutes':             // обчислюється кількість хвилин, які пройшли між датами
-      return `${Math.floor(timeDiff / (1000 * 60))} minutes`;
+      duration = timeDiff / (1000 * 60);
+      break;
     case 'seconds':             // обчислюється кількість секунд, які пройшли між датами, але секунди стоять по дефолту
-      return `${Math.floor(timeDiff / 1000)} seconds`;
+    default:  
+      duration = timeDiff / 1000;
+      break;
   }
+
+  return `${Math.floor(duration)} ${dimension}`;
 }
 
 // Приклади використання:
@@ -41,9 +48,8 @@ function optimizer(data) {  // optimizer приймає об'єкт data як п
   
     for (const key in data) {                           // розпочинає цикл де key є змінною, яка буде містити значення ключа на кожному повторенню циклу
       const lowerCaseKey = key.toLowerCase();           // перетворення ключа на нижній регістр
-      const price = parseFloat(data[key]).toFixed(2);   // data[key] перетворюється на число за допомогою parseFloat()
-                                                        // toFixed(2) заокругює ціну до двох знаків після коми
-      updatedData[lowerCaseKey] = price;                // Оновлене значення ціни присвоюється до ключа
+      updatedData[lowerCaseKey] = parseFloat(data[key]).toFixed(2);   // data[key] перетворюється на число за допомогою parseFloat()
+                                                                      // toFixed(2) заокругює ціну до двох знаків після коми
     }
   
     return updatedData;     // повернення оновленого об'єкту updatedData 
