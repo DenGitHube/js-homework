@@ -1,6 +1,6 @@
 // ⭐ 1. Задача про обчислення різниці часу ⭐ 
 
-/*
+
 
 function durationBetweenDates(start_date = new Date(), end_date = new Date(), dimension = 'seconds') {
   const startDateObj = new Date(start_date);    // представляє початкову дату
@@ -32,11 +32,11 @@ function durationBetweenDates(start_date = new Date(), end_date = new Date(), di
 console.log(durationBetweenDates('02 Aug 1985', '03 Aug 1985', 'seconds')); // виведе '86400 seconds'
 console.log(durationBetweenDates('31 Jan 2022', '03 Feb 2021', 'days'));    // виведе '362 days'
 
-*/
+
 
 // ⭐ 2. Задача про перетворення об'єкту ⭐
 
-/*
+
 
 const priceData = {
 Apples: '23.4',
@@ -58,11 +58,11 @@ function optimizer(data) {  // optimizer приймає об'єкт data як п
   let updatedPriceData = optimizer(priceData);
   console.log(updatedPriceData); // виведе {apples: '23.40', bananas: '48.00', oranges: '48.76'}
   
-*/
+
 
 // ⭐ 3. Задача про рекурсію та ітерацію ⭐ 
 
-/*
+
 
 function recursiveOddSumTo(number) {
     if (number <= 0) {      // перевірка number менше або дорівнює нулю
@@ -79,9 +79,9 @@ function recursiveOddSumTo(number) {
 console.log(recursiveOddSumTo(1));  // 1
 console.log(recursiveOddSumTo(10)); // 25 
 
-*/
 
-/*
+
+
 
 function iterativeOddSumTo(number) {
   let sum = 0; // створюється змінна sum та задається значення 0, ця змінна буде використовуватись для накопичення суми непарних чисел
@@ -98,4 +98,3 @@ function iterativeOddSumTo(number) {
 console.log(iterativeOddSumTo(1));  // 1
 console.log(iterativeOddSumTo(10)); // 25
 
-*/
