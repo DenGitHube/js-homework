@@ -2,26 +2,23 @@
 
 
 
-function durationBetweenDates(start_date = new Date(), end_date = new Date(), dimension = 'seconds') {
-  const startDateObj = new Date(start_date);    // представляє початкову дату
-  const endDateObj = new Date(end_date);        // представляє кінцеву дату
-  const timeDiff = Math.abs(endDateObj - startDateObj); // обчислюється різниця між кінцевою і початковою датами (в мілісекундах)
-                                                        // Math.abs знаходить більшу дату 
-  let duration;
+function durationBetweenDates(start_date = '1985-08-02', end_date = '1985-08-03', dimension = 'seconds') {       
+  const timeDiff = Math.abs(new Date(end_date) - new Date(start_date)); // обчислюємо різницю між кінцевою і початковою датами (в мілісекундах)
+
+  let duration = timeDiff / 1000; // розрахунок тривалості у секундах 
 
   switch (dimension) {          // оператор для вибору розмірності
     case 'days':                // обчислюється кількість днів, які пройшли між датами
-      duration = timeDiff / (1000 * 60 * 60 * 24);
+      duration /= (60 * 60 * 24);
       break;
     case 'hours':               // обчислюється кількість годин, які пройшли між датами
-      duration = timeDiff / (1000 * 60 * 60);
+      duration /= (60 * 60);
       break;
     case 'minutes':             // обчислюється кількість хвилин, які пройшли між датами
-      duration = timeDiff / (1000 * 60);
+      duration /= (60);
       break;
     case 'seconds':             // обчислюється кількість секунд, які пройшли між датами, але секунди стоять по дефолту
     default:  
-      duration = timeDiff / 1000;
       break;
   }
 
