@@ -3,12 +3,7 @@
 
 
 function addThemAll (...args) {  // приймає довільну кількість аргументів
-    let sum = 0; // змінна sum зі значенням нуль
-    for (let i = 0; i < args.length; i++) { // створюю змінну-лічильник і 
-                                            // "i < args.length" перевіряє, чи i є меншим за кількість аргументів у "args"
-        sum += args[i]; // sum збільшується на значення поточного аргументу (args[i])
-    }
-    return sum; // повернення значення sum
+    return args.reduce((sum, current) => sum + current, 0);
 }
 
 console.log(addThemAll(2,4)); // 6
@@ -69,12 +64,13 @@ const movies = [
 
 function byProperty(property, direction) {
     return function(a, b) {
-        if (direction === '>') {
-            return a[property] - b[property];
-        } else if (direction === '<') {
-            return b[property] - a[property];
-        } else {
-            return 0;
+        switch (direction) {    // перевірки значення параметра
+            case '>':
+                return a[property] - b[property]; // повертає різницю значень властивостей 'property' для об'єктів 'a і b'. Це значення буде використано для визначення порядку сортування.
+            case '<':
+                return b[property] - a[property]; // теж саме але тыльки у зворотному напрямку
+            default:   // Якщо значення 'direction' не відповідає жодній з вказаних умов, тоді виконується блок default
+                return 0; // і функція повертає 0
         }
     };
 }
@@ -101,13 +97,11 @@ function detonatorTimer(delay) {
   
       if (count === 0) { // Перевіряється, чи count досягло значення 0. Якщо так - то відлік завершено
         clearInterval(intervalId); // setInterval очищається, щоб зупинити виконання функції
-        setTimeout(() => { // функція яка виводить 'BOOM!'
-          console.log('BOOM!'); // виводить 'BOOM!'
-        }, 1000); // затримка 1 секунда
-      }
+            console.log('BOOM!'); 
+        }
     }, 1000); // затримка 1 секунда
-  }
-  
+}
+
 detonatorTimer(3);
 // 3
 // 2
@@ -190,5 +184,4 @@ let slowedSomeFunction = slower(someFunction, 5); // отримує резуль
 slowedSomeFunction(2, 3); // виклик slowedSomeFunction з аргументами 2 і 3
 
 // виведе в консоль "Chill out, you will get you result in 5 seconds"
-//...через 5 секунд виведе результат роботи 'someFunction'
-
+//...через 5 секунд виведе результат роботи 'someFunction' 
