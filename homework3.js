@@ -84,13 +84,12 @@ console.log(movies.sort(byProperty('movieName', '>'))); // виведе маси
 // 4. Напишіть функцію detonatorTimer(delay)
 //Вона виводить в консоль число кожну секунду, починаючи з delay (ціле число) і в кінці замість 0 виведе 'BOOM!'. Напишіть її двома варіантами:
 //Використовуючи setInterval
-//Використовуючи вкладений setTimeout
 
 
 
 function detonatorTimer(delay) {
     let count = delay;
-  
+
     const intervalId = setInterval(() => {  // setInterval створює затримку в 1 секунду або 1000 мілісекунд
       console.log(count); // виводиться поточне значення count у консоль
       count--; // зменшується на 1.
@@ -108,6 +107,31 @@ detonatorTimer(3);
 // 1
 // BOOM!
 
+//Використовуючи вкладений setTimeout
+
+
+function detonatorTimer(delay) {
+    let count = delay;
+  
+    const printCount = () => { // перевіряється, чи count більше 0
+      if (count > 0) {
+        console.log(count);
+        count--;
+        setTimeout(printCount, 1000); // Запускається новий setTimeout, який викликає функцію printCount знову через 1 секунду.
+      } else {
+        console.log('BOOM!');
+      }
+    };
+  
+    printCount(); 
+  }
+  
+detonatorTimer(3);
+// 3
+// 2
+// 1
+// BOOM!
+  
 
 
 // 5. Напишіть об'єкт в якому опишіть свої довільні властивості та довільні методи (2-3 штуки) що ці властивості виводять.
