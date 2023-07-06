@@ -15,3 +15,9 @@ body {
     font-size: 18px;
     margin-bottom: 10px;
   }
+
+/* Стилі для темної теми */
+.dark-mode {
+  background-color: gray;
+  color: #fff;
+}
