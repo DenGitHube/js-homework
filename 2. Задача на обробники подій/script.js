@@ -1,12 +1,8 @@
-// Очікую завантаження сторінки
-document.addEventListener('DOMContentLoaded', function() {
   // Отримання посилань 
   const toggleButton = document.getElementById('toggleButton');   // Кнопка 
   const statusMessage = document.getElementById('statusMessage'); // Повідомлення про час 
-  let isOn = localStorage.getItem('isOn') === 'true';           // Отримання значення змінної "isOn" з локального сховища
-  const timeElement = document.getElementById('time');            // Елемент для відображення поточного часу
-  let lastTurnOnTime = localStorage.getItem('lastTurnOnTime');
-  let lastTurnOffTime = localStorage.getItem('lastTurnOffTime');
+  let isDarkMode = localStorage.getItem('isDarkMode') === 'true'; // Отримання значення змінної "isDarkMode" з локального сховища
+  let lastToggleTime = localStorage.getItem('lastToggleTime');    // Час останньої зміни
 
   // Додав обробника події на кнопку 
   toggleButton.addEventListener('click', toggleState);
@@ -16,48 +12,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Функція для встановлення початкового стану
   function setInitialState() {
-    if (isOn) {
-      // Якщо "включено"
-      toggleButton.textContent = 'Turn off';                // Зміна тексту кнопки
-      document.body.classList.add('dark-mode');             // Додавання темної теми
-      showLastTurnTime('lastTurnOffTime', 'Last turn off'); // Відображення часу останнього вимкнення
+   if (isDarkMode) {
+      // Якщо "виключено"
+      toggleButton.textContent = 'Turn off';      // Зміна тексту кнопки
+      document.body.classList.add('dark-mode');   // Додавання темної теми
+      showLastTurnTime()                          // Відображення часу останнього вимкнення
     } else {
-      // Якщо "вимкнено"
-      toggleButton.textContent = 'Turn on';               // Зміна тексту кнопки
-      document.body.classList.remove('dark-mode');        //Видалення темної теми
-      showLastTurnTime('lastTurnOnTime', 'Last turn on'); // Відображення часу останнього ввімкнення
+      // Якщо "включено"
+      toggleButton.textContent = 'Turn on';           // Зміна тексту кнопки
+      document.body.classList.remove('dark-mode');    //Видалення темної теми
+      showLastTurnTime()                              // Відображення часу останнього ввімкнення
     }
   }
 
   // Функція для перемикання режиму
   function toggleState() {
-    isOn = !isOn; // Зміна значення змінної "isOn"
+    isDarkMode = !isDarkMode;   // Зміна значення змінної "isDarkMode" 
     const currentTime = getCurrentTime();
-    if (isOn) {
-      // Якщо стан після зміни "включено"
+    if (isDarkMode) { 
+      // Якщо стан після зміни "вимкнуто"
       toggleButton.textContent = 'Turn off';            // Зміна тексту кнопки
-      document.body.classList.add('dark-mode');         // Видалення темної теми
+      document.body.classList.add('dark-mode');         // Додавання темної теми
       lastTurnOnTime = currentTime;
       localStorage.setItem('lastTurnOnTime', lastTurnOnTime);
       statusMessage.textContent = `Last turn on: ${lastTurnOnTime}`;
     } else {
-      //Якщо стан після зміни "вимкнено"
+      //Якщо стан після зміни "увімкнено"
       toggleButton.textContent = 'Turn on';               // Зміна тексту кнопки
-      document.body.classList.remove('dark-mode');
+      document.body.classList.remove('dark-mode');        // Видалення темної теми
       lastTurnOffTime = currentTime;
       localStorage.setItem('lastTurnOffTime', lastTurnOffTime);
       statusMessage.textContent = `Last turn off: ${lastTurnOffTime}`;
     }
-    localStorage.setItem('isOn', isOn.toString());      // Збереження стану в локальне сховище
-    timeElement.style.color = isOn ? 'gray' : 'white';  // Зміна кольору тексту елементу timeElement залежно від стану
+    localStorage.setItem('isDarkMode', isDarkMode.toString());  // Збереження стану в локальне сховище
   }
 
   // Функція для відображення часу останнього перемикання
-  function showLastTurnTime(storageKey, message) {
-    const lastTurnTime = localStorage.getItem(storageKey); // Отримання часу з локального сховища за заданим ключем
+  function showLastToggleTime() { 
     if (lastTurnTime) {
       // Якщо час існує
-      statusMessage.textContent = `${message}: ${lastTurnTime}`; // Відображення повідомлення про час останнього перемикання
+      statusMessage.textContent = `Last toggle: ${lastToggleTime}`; // Відображення повідомлення про час останнього перемикання
     }
   }
 
@@ -72,4 +66,3 @@ document.addEventListener('DOMContentLoaded', function() {
     const seconds = ('0' + now.getSeconds()).slice(-2);
     return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
   }
-});
