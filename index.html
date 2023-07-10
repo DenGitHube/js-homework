@@ -1,41 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="index.css">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <title>Список завдань</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Курсовий проєкт 1</title>
 </head>
 <body>
-<div class="container">
-
-  <div class="create-task-block">
-    <form class="create-task-form">
-      <h3 class="task-title">Нове завдання</h3>
-      <div class="input-field">
-        <label>
-          <input type="text" name="task" class="task-input">
-        </label>
-      </div>
-      <button type="submit" class="btn">Додати завдання</button>
-    </form>
+  <h1>Курсовий проєкт 1</h1>
+  <h2>Данилов Денис</h2>
+  
+  <div class="form-row">
+    <label for="start-date">1️⃣Стартова дата:</label>
+    <input type="date" id="start-date" required>
+    
+    <label for="end-date">2️⃣Кінцева дата:</label>
+    <input type="date" id="end-date" required>
   </div>
-
-
-  <div class="filter-task-block">
-    <h3 class="task-title">Список завдань</h3>
-    <div class="input-field">
-      <label>
-        <input type="text" name="filter" class="filter-input" placeholder="Пошук завдань">
-      </label>
-    </div>
-    <ul class="collection"></ul>
-    <button class="clear-tasks">Видалити всі завдання</button>
+  
+  <div class="form-row">
+    <label for="preset">Пресети проміжків часу:</label>
+    <select id="preset">
+      <option value="week">тиждень</option>
+      <option value="month">місяць</option>
+    </select>
   </div>
-
-</div>
-<script src='index.js'></script>
+  
+  <div class="form-row">
+    <label for="options">Опції:</label>
+    <select id="options">
+      <option value="all">Всі дні</option>
+      <option value="weekdays">Будні дні</option>
+      <option value="weekends">Вихідні дні</option>
+    </select>
+  </div>
+  
+  <div class="form-row">
+    <label for="measure">Одиниця виміру:</label>
+    <select id="measure">
+      <option value="days">Кількість днів</option>
+      <option value="hours">Кількість годин</option>
+      <option value="minutes">Кількість хвилин</option>
+      <option value="seconds">Кількість секунд</option>
+    </select>
+  </div>
+  
+  <div class="form-row">
+    <button onclick="calculateTime()">Обчислити💨</button>
+  </div>
+  
+  <table id="results-table">
+    <tr>
+      <th>Стартова дата 🥇</th>
+      <th>Кінцева дата 🥈</th>
+      <th>Результат 🥉</th>
+      <th>Видалити 🗑️</th>
+    </tr>
+  </table>
+  <script src="script.js"></script>
 </body>
 </html>
+
