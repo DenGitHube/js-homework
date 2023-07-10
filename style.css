@@ -1,0 +1,107 @@
+body {
+  background-color: #086e70;
+}
+
+h1 {
+  color: #00CED1;
+  font-size: 24px;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+}
+
+h2 {
+  color: #00CED1;
+  font-size: 24px;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.button {
+  background-color: #087f81;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+input[type="date"] {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #00CED1;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: white;
+}
+
+.delete-button {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-row {
+  color: rgb(255, 217, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-row label {
+  margin-right: 10px;
+}
+
+.form-row select,
+.form-row input[type="date"],
+.form-row button {
+  padding: 5px;
+}
+
+.form-row button {
+  margin-left: 10px;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+    h1 {
+      font-size: 20px;
+    }
+
+    input[type="date"],
+    select {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .button {
+      width: 100%;
+    }
+
+    table {
+      font-size: 14px;
+    }
+  }
+}

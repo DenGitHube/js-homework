@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Курсовий проєкт 1</title>
+</head>
+<body>
+  <h1>Курсовий проєкт 1</h1>
+  <h2>Данилов Денис</h2>
+  
+  <div class="form-row">
+    <label for="start-date">1️⃣Стартова дата:</label>
+    <input type="date" id="start-date" required>
+    
+    <label for="end-date">2️⃣Кінцева дата:</label>
+    <input type="date" id="end-date" required>
+  </div>
+  
+  <div class="form-row">
+    <label for="preset">Пресети проміжків часу:</label>
+    <select id="preset">
+      <option value="week">тиждень</option>
+      <option value="month">місяць</option>
+    </select>
+  </div>
+  
+  <div class="form-row">
+    <label for="options">Опції:</label>
+    <select id="options">
+      <option value="all">Всі дні</option>
+      <option value="weekdays">Будні дні</option>
+      <option value="weekends">Вихідні дні</option>
+    </select>
+  </div>
+  
+  <div class="form-row">
+    <label for="measure">Одиниця виміру:</label>
+    <select id="measure">
+      <option value="days">Кількість днів</option>
+      <option value="hours">Кількість годин</option>
+      <option value="minutes">Кількість хвилин</option>
+      <option value="seconds">Кількість секунд</option>
+    </select>
+  </div>
+  
+  <div class="form-row">
+    <button onclick="calculateTime()">Обчислити💨</button>
+  </div>
+  
+  <table id="results-table">
+    <tr>
+      <th>Стартова дата 🥇</th>
+      <th>Кінцева дата 🥈</th>
+      <th>Результат 🥉</th>
+      <th>Видалити 🗑️</th>
+    </tr>
+  </table>
+  <script src="script.js"></script>
+</body>
+</html>
+
