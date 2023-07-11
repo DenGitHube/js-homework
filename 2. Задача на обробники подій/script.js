@@ -1,32 +1,32 @@
 'use strict';
 
-// Отримання посилань 
-const toggleButton = document.getElementById('toggleButton');   // Кнопка 
-const statusMessage = document.getElementById('statusMessage'); // Повідомлення про час 
+// Отримання посилань
+const toggleButton = document.getElementById('toggleButton');   // Кнопка
+const statusMessage = document.getElementById('statusMessage'); // Повідомлення про час
 let isDarkMode = localStorage.getItem('isDarkMode') === 'true'; // Отримання значення змінної "isDarkMode" з локального сховища
-let lastToggleTime = localStorage.getItem('lastToggleTime');    // Час останньої зміни
+let lastTurnOffTime = localStorage.getItem('lastTurnOffTime'); // Час останнього вимкнення
 
 // Встановлення початкового стану
 if (isDarkMode) {
   // Якщо "виключено"
   toggleButton.textContent = 'Turn off';      // Зміна тексту кнопки
   document.body.classList.add('dark-mode');   // Додавання темної теми
-  showLastToggleTime();                       // Відображення часу останньої операції
+  showLastTurnOffTime();                       // Відображення часу останнього вимкнення
 } else {
   // Якщо "включено"
   toggleButton.textContent = 'Turn on';           // Зміна тексту кнопки
   document.body.classList.remove('dark-mode');    // Видалення темної теми
-  showLastToggleTime();                           // Відображення часу останньої операції
+  showLastTurnOffTime();                           // Відображення часу останнього вимкнення
 }
 
-// Додав обробника події на кнопку 
+// Додав обробника події на кнопку
 toggleButton.addEventListener('click', toggleState);
 
 // Функція для перемикання режиму
 function toggleState() {
-  isDarkMode = !isDarkMode;   // Зміна значення змінної "isDarkMode" 
+  isDarkMode = !isDarkMode;   // Зміна значення змінної "isDarkMode"
   const currentTime = getCurrentTime();
-  if (isDarkMode) { 
+  if (isDarkMode) {
     // Якщо стан після зміни "вимкнуто"
     toggleButton.textContent = 'Turn off';            // Зміна тексту кнопки
     document.body.classList.add('dark-mode');         // Додавання темної теми
@@ -35,17 +35,17 @@ function toggleState() {
     toggleButton.textContent = 'Turn on';               // Зміна тексту кнопки
     document.body.classList.remove('dark-mode');        // Видалення темної теми
   }
-  lastToggleTime = currentTime;
-  localStorage.setItem('lastToggleTime', lastToggleTime);
-  statusMessage.textContent = `Last toggle: ${lastToggleTime}`;
+  lastTurnOffTime = currentTime;
+  localStorage.setItem('lastTurnOffTime', lastTurnOffTime);
+  statusMessage.textContent = `Last toggle: ${lastTurnOffTime}`;
   localStorage.setItem('isDarkMode', isDarkMode);  // Збереження стану в локальне сховище
 }
 
-// Функція для відображення часу останньої операції
-function showLastToggleTime() { 
-  if (lastToggleTime) {
+// Функція для відображення часу останнього вимкнення
+function showLastTurnOffTime() {
+  if (lastTurnOffTime) {
     // Якщо час існує
-    statusMessage.textContent = `Last toggle: ${lastToggleTime}`; // Відображення повідомлення про час останньої операції
+    statusMessage.textContent = `Last toggle: ${lastTurnOffTime}`; // Відображення повідомлення про час останнього вимкнення
   }
 }
 
