@@ -1,0 +1,23 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    text-align: center;
+    height: auto;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+/* Стилі для темної теми */
+.dark-mode {
+  background-color: gray;
+  color: #fff;
+}
