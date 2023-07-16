@@ -1,5 +1,10 @@
 body {
   background-color: #086e70;
+  padding: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h1 {
@@ -8,6 +13,7 @@ h1 {
   text-align: center;
   font-style: italic;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
 h2 {
@@ -16,34 +22,59 @@ h2 {
   text-align: center;
   font-style: italic;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.button {
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  margin-right: 10px;
+  color: #fff;
+}
+
+.form-row select,
+.form-row input[type="date"],
+.form-row button {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.form-row select {
+  width: 150px;
+}
+
+.form-row input[type="date"] {
+  width: 200px;
+}
+
+.form-row button {
   background-color: #087f81;
   color: white;
-  padding: 10px 20px;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 10px 20px;
   font-weight: bold;
+  cursor: pointer;
 }
 
-input[type="date"] {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: white;
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
   background-color: #00CED1;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-th, td {
+th,
+td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -59,49 +90,24 @@ th, td {
   cursor: pointer;
 }
 
-.form-row {
-  color: rgb(255, 217, 0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.form-row label {
-  margin-right: 10px;
-}
-
-.form-row select,
-.form-row input[type="date"],
-.form-row button {
-  padding: 5px;
-}
-
-.form-row button {
-  margin-left: 10px;
-}
-
 @media (max-width: 480px) {
-  body {
-    padding: 10px;
-    h1 {
-      font-size: 20px;
-    }
+  h1 {
+    font-size: 20px;
+  }
 
-    input[type="date"],
-    select {
-      width: 100%;
-      margin-bottom: 10px;
-    }
+  .form-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-    .button {
-      width: 100%;
-    }
+  .form-row label {
+    margin-bottom: 5px;
+  }
 
-    table {
-      font-size: 14px;
-    }
+  .form-row select,
+  .form-row input[type="date"],
+  .form-row button {
+    width: 100%;
+    margin-bottom: 5px;
   }
 }
