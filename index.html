@@ -6,7 +6,6 @@
 </head>
 <body>
   <h1>Курсовий проєкт 1</h1>
-  <h2>Данилов Денис</h2>
   
   <div class="form-row">
     <label for="start-date">1️⃣Стартова дата:</label>
@@ -18,7 +17,8 @@
   
   <div class="form-row">
     <label for="preset">Пресети проміжків часу:</label>
-    <select id="preset">
+    <select id="preset" onchange="handlePresetChange()">
+      <option value="alldays">Всі дні</option>
       <option value="week">тиждень</option>
       <option value="month">місяць</option>
     </select>
@@ -58,4 +58,3 @@
   <script src="script.js"></script> 
 </body>
 </html>
-
