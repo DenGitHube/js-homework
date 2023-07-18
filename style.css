@@ -59,6 +59,44 @@ h2 {
   font-weight: bold;
   cursor: pointer;
 }
+/* ------------- */
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: flex-start;
+}
+
+.form-row label {
+  margin-right: 10px;
+  color: #fff;
+  min-width: 160px; /* Додано мінімальну ширину для етикеток */
+}
+
+.form-row select,
+.form-row input[type="date"],
+.form-row button {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.form-row select {
+  width: 150px;
+}
+
+.form-row input[type="date"] {
+  width: 200px;
+}
+
+.form-row button {
+  background-color: #087f81;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* ------------- */
 
 .table-container {
   width: 100%;
