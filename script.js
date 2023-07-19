@@ -17,7 +17,7 @@ var doubled = customMap(numbers, function(num) {
 console.log(doubled); // [2, 4, 6, 8, 10]
 */
 
-
+/*
 // 1) Клас-предок
 class Entity {
   // Конструктор класу, приймає параметр name
@@ -144,4 +144,102 @@ bird.uniqueMethod(); // Унікальний метод для птаха
 console.log(dog.privateProperty); // Доступ до приватної властивості класу Entity
 console.log(cat.privateProperty); // Доступ до приватної властивості класу Entity
 console.log(bird.privateProperty); // Доступ до приватної властивості класу Entity
+*/
+
+class AnimalPokemon {
+  catchBall() {
+    return `${this.name} was caught with a ball!`;
+  }
+}
+
+class Animal extends AnimalPokemon {
+  constructor(name, age, species) {
+    super();
+    this.name = name;
+    this.age = age;
+    this.species = species;
+    this.sound = "Roar"; // Унікальна властивість для Тварини
+    this._isSleeping = false; // Приватна властивість для Тварини
+  }
+
+  makeSound() {
+    return `${this.name} says ${this.sound}!`;
+  }
+
+  eatFood() {
+    return `${this.name} is eating.`;
+  }
+
+  sleep() {
+    this._isSleeping = true;
+    return `${this.name} is sleeping now.`;
+  }
+}
+
+class Pokemon extends AnimalPokemon {
+  constructor(name, level, type) {
+    super();
+    this.name = name;
+    this.level = level;
+    this.type = type;
+    this.ability = "Thunderbolt"; // Унікальна властивість для Покемона
+    this._experiencePoints = 0; // Приватна властивість для Покемона
+  }
+
+  attack() {
+    return `${this.name} uses Quick Attack!`;
+  }
+
+  useAbility() {
+    return `${this.name} uses ${this.ability}!`;
+  }
+
+  train() {
+    this._experiencePoints += 10;
+    return `${this.name} gained 10 experience points!`;
+  }
+}
+
+class Race extends AnimalPokemon {
+  constructor(name, origin, population) {
+    super();
+    this.name = name;
+    this.origin = origin;
+    this.population = population;
+    this.language = "Elvish"; // Унікальна властивість для Раси
+    this._isEndangered = false; // Приватна властивість для Раси
+  }
+
+  growPopulation() {
+    this.population += 100;
+    return `${this.name} population increased by 100!`;
+  }
+
+  migrate() {
+    return `${this.name} is migrating to a new land.`;
+  }
+
+  communicate() {
+    return `${this.name} speaks in ${this.language}.`;
+  }
+}
+
+// Приклад використання
+const lion = new Animal("Leo", 5, "Lion");
+console.log(lion.makeSound()); // Leo says Roar!
+console.log(lion.eatFood()); // Leo is eating.
+console.log(lion.sleep()); // Leo is sleeping now.
+console.log(lion.catchBall()); // Leo was caught with a ball!
+
+const pikachu = new Pokemon("Pikachu", 10, "Electric");
+console.log(pikachu.attack()); // Pikachu uses Quick Attack!
+console.log(pikachu.useAbility()); // Pikachu uses Thunderbolt!
+console.log(pikachu.train()); // Pikachu gained 10 experience points!
+console.log(pikachu.catchBall()); // Pikachu was caught with a ball!
+
+const elf = new Race("Elrond", "Rivendell", 1000);
+console.log(elf.growPopulation()); // Elrond population increased by 100!
+console.log(elf.migrate()); // Elrond is migrating to a new land.
+console.log(elf.communicate()); // Elrond speaks in Elvish.
+console.log(elf.catchBall()); // Elrond was caught with a ball!
 
