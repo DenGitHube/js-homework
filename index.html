@@ -7,16 +7,18 @@
 <body>
   <h1>Курсовий проєкт 1</h1>
   
-  <div class="form-row">
+  <div class="form-row preset-row">
     <label for="start-date">1️⃣Стартова дата:</label>
     <input type="date" id="start-date" required>
-    
+  </div>
+
+  <div class="form-row preset-row">
     <label for="end-date">2️⃣Кінцева дата:</label>
     <input type="date" id="end-date" required>
   </div>
   
-  <div class="form-row">
-    <label for="preset">Пресети проміжків часу:</label>
+  <div class="form-row preset-row">
+    <div class="preset-label">Пресети проміжків часу:</div>
     <select id="preset" onchange="handlePresetChange()">
       <option value="alldays">Всі дні</option>
       <option value="week">тиждень</option>
@@ -24,7 +26,7 @@
     </select>
   </div>
   
-  <div class="form-row">
+  <div class="form-row preset-row">
     <label for="options">Опції:</label>
     <select id="options">
       <option value="all">Всі дні</option>
@@ -33,7 +35,7 @@
     </select>
   </div>
   
-  <div class="form-row">
+  <div class="form-row preset-row">
     <label for="measure">Одиниця виміру:</label>
     <select id="measure">
       <option value="days">Кількість днів</option>
