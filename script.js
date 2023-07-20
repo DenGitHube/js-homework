@@ -146,6 +146,7 @@ console.log(cat.privateProperty); // Доступ до приватної вла
 console.log(bird.privateProperty); // Доступ до приватної властивості класу Entity
 */
 
+/*
 class AnimalPokemon {
   catchBall() {
     return `${this.name} was caught with a ball!`;
@@ -242,4 +243,134 @@ console.log(elf.growPopulation()); // Elrond population increased by 100!
 console.log(elf.migrate()); // Elrond is migrating to a new land.
 console.log(elf.communicate()); // Elrond speaks in Elvish.
 console.log(elf.catchBall()); // Elrond was caught with a ball!
+*/
 
+// Клас Animal - базовий клас для усіх тварин
+class Animal {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+    this.#isAlive = true; // Приватна властивість, яка вказує, чи тварина жива
+  }
+
+  // Метод, що повертає інформацію про тварину
+  getInfo() {
+    return `Name: ${this.name}, Age: ${this.age}`;
+  }
+
+  // Метод, який змінює статус живої тварини
+  kill() {
+    this.#isAlive = false;
+    console.log(`${this.name} has died.`);
+  }
+
+  // Спільний метод, що виконує дію "їсти" для всіх тварин
+  eat() {
+    console.log(`${this.name} is eating.`);
+  }
+}
+
+// Клас Dog - клас для представлення собаки, успадковуємо Animal
+class Dog extends Animal {
+  constructor(name, age, breed) {
+    super(name, age);
+    this.breed = breed;
+  }
+
+  // Метод, що повертає інформацію про собаку та її породу
+  getInfo() {
+    return `${super.getInfo()}, Breed: ${this.breed}`;
+  }
+
+  // Метод, який виконує дію "гавкати" для собаки
+  bark() {
+    console.log(`${this.name} is barking.`);
+  }
+}
+
+// Клас Cat - клас для представлення кота, успадковуємо Animal
+class Cat extends Animal {
+  constructor(name, age, color) {
+    super(name, age);
+    this.color = color;
+  }
+
+  // Метод, що повертає інформацію про кота та його окрас
+  getInfo() {
+    return `${super.getInfo()}, Color: ${this.color}`;
+  }
+
+  // Метод, який виконує дію "присмикатися" для кота
+  purr() {
+    console.log(`${this.name} is purring.`);
+  }
+}
+
+// Клас Bird - клас для представлення птаха, успадковуємо Animal
+class Bird extends Animal {
+  constructor(name, age, species) {
+    super(name, age);
+    this.species = species;
+  }
+
+  // Метод, що повертає інформацію про птаха та його вид
+  getInfo() {
+    return `${super.getInfo()}, Species: ${this.species}`;
+  }
+
+  // Метод, який виконує дію "співати" для птаха
+  sing() {
+    console.log(`${this.name} is singing.`);
+  }
+}
+
+// Клас FlyingBird - клас для птахів, які можуть літати, успадковуємо Bird
+class FlyingBird extends Bird {
+  constructor(name, age, species, wingspan) {
+    super(name, age, species);
+    this.wingspan = wingspan;
+  }
+
+  // Метод, що повертає інформацію про птаха та розмах його крил
+  getInfo() {
+    return `${super.getInfo()}, Wingspan: ${this.wingspan} cm`;
+  }
+
+  // Спільний метод, що виконує дію "літати" для птахів, які можуть літати
+  fly() {
+    console.log(`${this.name} is flying.`);
+  }
+}
+
+// Приклад використання
+
+// Створюємо об'єкти-сутності тварин
+const dog = new Dog("Buddy", 3, "Golden Retriever");
+const cat = new Cat("Whiskers", 2, "Orange Tabby");
+const bird = new Bird("Bluey", 1, "Blue Jay");
+const flyingBird = new FlyingBird("Sparrow", 1, "House Sparrow", 15);
+
+// Використовуємо методи та властивості об'єктів
+console.log(dog.getInfo()); // Name: Buddy, Age: 3, Breed: Golden Retriever
+dog.bark(); // Buddy is barking.
+dog.eat(); // Buddy is eating.
+
+console.log(cat.getInfo()); // Name: Whiskers, Age: 2, Color: Orange Tabby
+cat.purr(); // Whiskers is purring.
+cat.eat(); // Whiskers is eating.
+
+console.log(bird.getInfo()); // Name: Bluey, Age: 1, Species: Blue Jay
+bird.sing(); // Bluey is singing.
+bird.eat(); // Bluey is eating.
+
+console.log(flyingBird.getInfo()); // Name: Sparrow, Age: 1, Species: House Sparrow, Wingspan: 15 cm
+flyingBird.fly(); // Sparrow is flying.
+flyingBird.eat(); // Sparrow is eating.
+
+// приватні властивості (#isAlive у класі "Animal") та приватні методи (#validateAccountNumber в прикладі customMap)
+// не підтримуються всіма браузерами та двигунами JavaScript
+// А якщо я напишу альтернативу, використавши змінні з префіксом "_" або "_private", щоб імітувати приватні властивості
+// Це не буде одне й те саме? 
+
+// в мене з'являється помилка SyntaxError: Private field '#isAlive' must be declared in an enclosing class
+// я почитав та зрозумів що її можна уникнути замінивши приватне поле #isAlive на просте поле isAlive, яке всеодно буде доступне тільки в межах класу "Animal", тому-що поля за замовчуванням мають обмежену видимість.
