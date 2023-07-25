@@ -123,8 +123,11 @@ function calculateTime() {
   if (options === 'weekdays') {
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
+
+    // Викликаємо функцію, яка вираховує кількість будніх днів між датами
     const weekdays = getWeekdaysBetweenDates(startDateObj, endDateObj);
-    result = weekdays.length;
+
+    result = weekdays.length - 1; // Виправлена логіка, віднімаємо 1 день
 
     if (measure === 'hours') {
       result *= 24;
@@ -139,7 +142,10 @@ function calculateTime() {
   } else if (options === 'weekends') {
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
+
+    // Викликаємо функцію, яка вираховує кількість вихідних днів між датами
     const weekends = getWeekendsBetweenDates(startDateObj, endDateObj);
+
     result = weekends.length;
 
     if (measure === 'hours') {
