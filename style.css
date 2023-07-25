@@ -1,0 +1,148 @@
+body {
+  background-color: #086e70;
+  padding: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #00CED1;
+  font-size: 24px;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  margin-right: 10px;
+  color: #fff;
+  min-width: 160px;
+}
+
+.form-row select,
+.form-row input[type="date"],
+.form-row button {
+  padding: 5px;
+  border-radius: 4px;
+  flex: 1; /* Розподілити доступний простір рівномірно */
+}
+
+.form-row select {
+  min-width: 150px;
+  max-width: 200px; /* Обмежити максимальну ширину, щоб уникнути переповнення на менших екранах */
+}
+
+.form-row input[type="date"] {
+  min-width: 200px;
+  max-width: 300px; /* Обмежити максимальну ширину, щоб уникнути переповнення на менших екранах */
+}
+
+.form-row button {
+  background-color: #087f81;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #00CED1;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: white;
+}
+
+.delete-button {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.preset-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: flex-start;
+  border: 1px solid #fff; /* Додаємо рамку вокруг рядка */
+  padding: 5px; /* Додаємо внутрішній відступ для рамки */
+  flex-wrap: wrap; /* Дозволяємо елементам переноситися на менших екранах */
+}
+
+.preset-label {
+  color: #fff;
+  margin-right: 10px;
+  min-width: 160px;
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .form-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .form-row label {
+    margin-bottom: 5px;
+    min-width: auto;
+  }
+
+  .form-row select,
+  .form-row input[type="date"],
+  .form-row button {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  /* Змінюємо розмір шрифта для кращої читабельності на менших екранах */
+  .form-row select,
+  .form-row input[type="date"],
+  .form-row button,
+  th,
+  td {
+    font-size: 14px;
+  }
+
+  .preset-row {
+    justify-content: center; /* Центруємо елементи на менших екранах */
+  }
+
+  .preset-label {
+    min-width: auto; /* Видаляємо мінімальну ширину для етикетки */
+    margin-right: 0; /* Видаляємо правий відступ для етикетки */
+  }
+
+  .form-row select,
+  .form-row input[type="date"] {
+    max-width: 100%; /* Дозволяємо інпутам займати повну ширину на менших екранах */
+  }
+}
