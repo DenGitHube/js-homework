@@ -247,7 +247,8 @@ console.log(elf.catchBall()); // Elrond was caught with a ball!
 
 // Клас Animal - базовий клас для усіх тварин
 class Animal {
-  constructor(name, age) {
+    #isAlive
+    constructor(name, age) {
     this.name = name;
     this.age = age;
     this.#isAlive = true; // Приватна властивість, яка вказує, чи тварина жива
