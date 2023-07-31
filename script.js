@@ -1,377 +1,248 @@
-'use strict';
+'use string'
 
-/*
-function customMap(array, callback) {
-  var newArray = [];
-  for (var i = 0; i < array.length; i++) {
-    newArray.push(callback(array[i], i, array));
-  }
-  return newArray;
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const gridSize = 20;
+const canvasWidth = 720;
+const canvasHeight = 460;
+
+let snake = [{ x: 10, y: 10 }];
+let direction = "right";
+let food = generateFood();
+let isGameOver = false;
+let blocksEaten = 0; // Лічильник з'їдених блоків
+const speedIncrement = 5; // Значення, на яке зростає швидкість через кожні 5 поглинених блоків
+let gameSpeed = 100; // Default speed
+let maxBlocksEaten = 0; // Максимальний результат
+
+function drawSnakePart(snakePart) {
+  ctx.fillStyle = "green";
+  ctx.fillRect(snakePart.x * gridSize, snakePart.y * gridSize, gridSize, gridSize);
+  ctx.strokeStyle = "black";
+  ctx.strokeRect(snakePart.x * gridSize, snakePart.y * gridSize, gridSize, gridSize);
 }
 
-// Приклад використання
-var numbers = [1, 2, 3, 4, 5];
-var doubled = customMap(numbers, function(num) {
-  return num * 2;
+function drawFood() {
+  ctx.fillStyle = "red";
+  ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
+}
+
+function generateFood() {
+  let newFood;
+  do {
+    newFood = {
+      x: Math.floor(Math.random() * (canvasWidth / gridSize)),
+      y: Math.floor(Math.random() * (canvasHeight / gridSize)),
+    };
+  } while (snake.some((part) => part.x === newFood.x && part.y === newFood.y) || newFood.x >= canvasWidth / gridSize || newFood.y >= canvasHeight / gridSize);
+  return newFood;
+}
+
+function checkCollision() {
+  const head = snake[0];
+  if (head.x < 0 || head.x >= canvasWidth / gridSize || head.y < 0 || head.y >= canvasHeight / gridSize) {
+    return true; // Зіткнення з межами
+  }
+
+  for (let i = 1; i < snake.length; i++) {
+    if (snake[i].x === head.x && snake[i].y === head.y) {
+      return true; // Зіткнення з самим собою
+    }
+  }
+
+  return false;
+}
+
+function update() {
+  if (isGameOver) return;
+
+  let head = { ...snake[0] };
+
+  switch (direction) {
+    case "up":
+      head.y--;
+      break;
+    case "down":
+      head.y++;
+      break;
+    case "left":
+      head.x--;
+      break;
+    case "right":
+      head.x++;
+      break;
+  }
+
+  // Змійка перетинає верхню межу поля, з'являється знизу
+  if (head.y < 0) {
+    head.y = Math.floor(canvasHeight / gridSize) - 1;
+  }
+  // Змійка перетинає нижню межу поля, з'являється зверху
+  else if (head.y >= canvasHeight / gridSize) {
+    head.y = 0;
+  }
+
+  // Змійка перетинає ліву межу поля, з'являється справа
+  if (head.x < 0) {
+    head.x = Math.floor(canvasWidth / gridSize) - 1;
+  }
+  // Змійка перетинає праву межу поля, з'являється зліва
+  else if (head.x >= canvasWidth / gridSize) {
+    head.x = 0;
+  }
+
+  snake.unshift(head);
+
+  if (head.x === food.x && head.y === food.y) {
+    food = generateFood();
+    blocksEaten++;
+
+    // Перевіряємо, чи досягли ми кожних 5 блоків
+    if (blocksEaten % 5 === 0) {
+      gameSpeed -= speedIncrement; // Зменшуємо затримку (збільшуємо швидкість)
+      updateSpeedDisplay(); // Оновлюємо відображення швидкості на екрані
+    }
+
+    // Оновлюємо відображення з'їдених блоків на екрані
+    updateBlocksEatenDisplay();
+  } else {
+    snake.pop();
+  }
+
+  // Оновлюємо поле лише у випадку, якщо гра не закінчена
+  if (checkCollision()) {
+    isGameOver = true;
+    showGameOverModal();
+    updateMaxBlocksEaten(); // Оновлюємо максимальний результат
+    return;
+  }
+
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+  drawFood();
+  snake.forEach(drawSnakePart);
+
+  setTimeout(update, gameSpeed); // Затримка виклику для заданої швидкості
+}
+
+document.addEventListener("keydown", (event) => {
+  if (isGameOver) return;
+
+  const key = event.key;
+  switch (key) {
+    case "ArrowUp":
+      if (direction !== "down") direction = "up";
+      break;
+    case "ArrowDown":
+      if (direction !== "up") direction = "down";
+      break;
+    case "ArrowLeft":
+      if (direction !== "right") direction = "left";
+      break;
+    case "ArrowRight":
+      if (direction !== "left") direction = "right";
+      break;
+  }
 });
-console.log(doubled); // [2, 4, 6, 8, 10]
-*/
 
-/*
-// 1) Клас-предок
-class Entity {
-  // Конструктор класу, приймає параметр name
-  constructor(name) {
-    // Присвоюємо значення параметра name до властивості name об'єкта
-    this.name = name;
-    // Встановлюємо значення "Private property" для приватної властивості privateProperty
-    this.privateProperty = "Private property";
-  }
+function showGameOverModal() {
+  const gameOverModal = document.getElementById("gameOver");
+  gameOverModal.classList.remove("hidden");
+}
 
-  // Спільний метод, який виводить повідомлення
-  sharedMethod() {
-    console.log("This is a shared method.");
+// Функція, яка обнулює лічильник з'їдених блоків та повертає швидкість до початкового значення
+function resetGameValues() {
+  blocksEaten = 0; // Обнулюємо лічильник з'їдених блоків
+  gameSpeed = 100; // Повертаємо швидкість до початкового значення
+  updateBlocksEatenDisplay(); // Оновлюємо відображення з'їдених блоків на екрані
+  updateSpeedDisplay(); // Оновлюємо відображення швидкості на екрані
+}
+
+function restartGame() {
+  const gameOverModal = document.getElementById("gameOver");
+  gameOverModal.classList.add("hidden");
+
+  snake = [{ x: 10, y: 10 }];
+  direction = "right";
+  food = generateFood();
+  isGameOver = false;
+
+  resetGameValues(); // Викликаємо функцію для скидання значень
+
+  update();
+}
+
+// Оновлення відображення з'їдених блоків на екрані
+function updateBlocksEatenDisplay() {
+  const blocksEatenDisplay = document.getElementById("blocksEatenDisplay");
+  blocksEatenDisplay.textContent = `З'їдено блоків: ${blocksEaten}`;
+}
+
+// Оновлення відображення максимального результату на екрані
+function updateMaxBlocksEatenDisplay() {
+  const maxBlocksEatenDisplay = document.getElementById("maxBlocksEatenDisplay");
+  maxBlocksEatenDisplay.textContent = `Макс. результат: ${maxBlocksEaten}`;
+}
+
+// Оновлення відображення поточної швидкості на екрані
+function updateSpeedDisplay() {
+  const speedDisplay = document.getElementById("speedDisplay");
+  speedDisplay.textContent = `Швидкість: ${gameSpeed}`;
+}
+
+// Завантаження максимального результату з localStorage
+function loadMaxBlocksEaten() {
+  const savedMaxBlocksEaten = localStorage.getItem("maxBlocksEaten");
+  if (savedMaxBlocksEaten !== null) {
+    maxBlocksEaten = parseInt(savedMaxBlocksEaten);
+    updateMaxBlocksEatenDisplay();
   }
 }
 
-// 2) Класи-сутності (тварини)
-class Animal extends Entity {
-  // Конструктор класу, приймає параметри name, age, species
-  constructor(name, age, species) {
-    // Виклик конструктора батьківського класу і передача параметра name
-    super(name);
-    // Присвоюємо значення параметра age до властивості age об'єкта
-    this.age = age;
-    // Присвоюємо значення параметра species до властивості species об'єкта
-    this.species = species;
-  }
-
-  // Метод, який виводить повідомлення про їжу
-  eat(food) {
-    console.log(`${this.name} is eating ${food}.`);
-  }
-
-  // Метод, який виводить повідомлення про сон
-  sleep() {
-    console.log(`${this.name} is sleeping.`);
-  }
-
-  // Унікальний метод для підкласу Animal, який виводить повідомлення про унікальну властивість
-  uniqueProperty() {
-    console.log(`Unique property for ${this.name}`);
+// Функція оновлення максимального результату
+function updateMaxBlocksEaten() {
+  if (blocksEaten > maxBlocksEaten) {
+    maxBlocksEaten = blocksEaten;
+    localStorage.setItem("maxBlocksEaten", maxBlocksEaten.toString()); // Зберігаємо максимальний результат у localStorage
+    updateMaxBlocksEatenDisplay(); // Оновлюємо відображення максимального результату на екрані
   }
 }
 
-// Клас-потомок Dog успадковує властивості та методи від Animal
-class Dog extends Animal {
-  // Конструктор класу, приймає параметри name, age, breed
-  constructor(name, age, breed) {
-    // Виклик конструктора батьківського класу і передача параметрів name, age, "Dog"
-    super(name, age, "Dog");
-    // Присвоюємо значення параметра breed до властивості breed об'єкта
-    this.breed = breed;
+// Додавання обробника події для старту гри при натисканні на ігрове поле
+canvas.addEventListener("click", () => {
+  if (!isGameOver) return; // Якщо гра вже запущена, ігноруємо клік
+
+  restartGame();
+
+  // Оновлюємо відображення лічильників перед початком нової гри
+  updateBlocksEatenDisplay();
+  loadMaxBlocksEaten(); // Завантажуємо максимальний результат
+  updateSpeedDisplay();
+});
+
+// Перевірка стану гри після завантаження сторінки
+document.addEventListener("DOMContentLoaded", () => {
+  const gameOverModal = document.getElementById("gameOver");
+
+  // Завантажуємо дані із localStorage та відновлюємо стан гри
+  if (localStorage.getItem("isGameOver") === "true") {
+    isGameOver = true;
+    showGameOverModal();
+    blocksEaten = parseInt(localStorage.getItem("blocksEaten")) || 0;
+    gameSpeed = parseInt(localStorage.getItem("gameSpeed")) || 100;
+    updateBlocksEatenDisplay();
+    loadMaxBlocksEaten(); // Завантажуємо максимальний результат
+    updateSpeedDisplay();
+  } else {
+    restartGame(); // Запускаємо нову гру
   }
+});
 
-  // Метод, який виводить повідомлення про гавкання
-  bark() {
-    console.log("Woof! Woof!");
-  }
-
-  // Унікальний метод для підкласу Dog
-  uniqueMethod() {
-    console.log(`Unique method for ${this.name}`);
-  }
-}
-
-// Клас-потомок Cat успадковує властивості та методи від Animal
-class Cat extends Animal {
-  // Конструктор класу, приймає параметри name, age, color
-  constructor(name, age, color) {
-    // Виклик конструктора батьківського класу і передача параметрів name, age, "Cat"
-    super(name, age, "Cat");
-    // Присвоюємо значення параметра color до властивості color об'єкта
-    this.color = color;
-  }
-
-  // Метод, який виводить повідомлення про мяукання
-  meow() {
-    console.log("Meow!");
-  }
-
-  // Унікальний метод для підкласу Cat
-  uniqueMethod() {
-    console.log(`Unique method for ${this.name}`);
-  }
-}
-
-// Клас-потомок Bird успадковує властивості та методи від Animal
-class Bird extends Animal {
-  // Конструктор класу, приймає параметри name, age, type
-  constructor(name, age, type) {
-    // Виклик конструктора батьківського класу і передача параметрів name, age, "Bird"
-    super(name, age, "Bird");
-    // Присвоюємо значення параметра type до властивості type об'єкта
-    this.type = type;
-  }
-
-  // Метод, який виводить повідомлення про польот
-  fly() {
-    console.log(`${this.name} is flying.`);
-  }
-
-  // Унікальний метод для підкласу Bird
-  uniqueMethod() {
-    console.log(`Unique method for ${this.name}`);
-  }
-}
-
-// Приклад використання створених класів і об'єктів
-const dog = new Dog("Buddy", 3, "Labrador");
-const cat = new Cat("Whiskers", 5, "Orange");
-const bird = new Bird("Tweety", 2, "Canary");
-
-dog.sharedMethod(); // Виклик спільного методу класу Entity
-cat.sharedMethod(); // Виклик спільного методу класу Entity
-
-dog.bark(); // Метод тільки для собаки
-cat.meow(); // Метод тільки для кота
-bird.fly(); // Метод тільки для птаха
-
-dog.uniqueMethod(); // Унікальний метод для собаки
-cat.uniqueMethod(); // Унікальний метод для кота
-bird.uniqueMethod(); // Унікальний метод для птаха
-
-console.log(dog.privateProperty); // Доступ до приватної властивості класу Entity
-console.log(cat.privateProperty); // Доступ до приватної властивості класу Entity
-console.log(bird.privateProperty); // Доступ до приватної властивості класу Entity
-*/
-
-/*
-class AnimalPokemon {
-  catchBall() {
-    return `${this.name} was caught with a ball!`;
-  }
-}
-
-class Animal extends AnimalPokemon {
-  constructor(name, age, species) {
-    super();
-    this.name = name;
-    this.age = age;
-    this.species = species;
-    this.sound = "Roar"; // Унікальна властивість для Тварини
-    this._isSleeping = false; // Приватна властивість для Тварини
-  }
-
-  makeSound() {
-    return `${this.name} says ${this.sound}!`;
-  }
-
-  eatFood() {
-    return `${this.name} is eating.`;
-  }
-
-  sleep() {
-    this._isSleeping = true;
-    return `${this.name} is sleeping now.`;
-  }
-}
-
-class Pokemon extends AnimalPokemon {
-  constructor(name, level, type) {
-    super();
-    this.name = name;
-    this.level = level;
-    this.type = type;
-    this.ability = "Thunderbolt"; // Унікальна властивість для Покемона
-    this._experiencePoints = 0; // Приватна властивість для Покемона
-  }
-
-  attack() {
-    return `${this.name} uses Quick Attack!`;
-  }
-
-  useAbility() {
-    return `${this.name} uses ${this.ability}!`;
-  }
-
-  train() {
-    this._experiencePoints += 10;
-    return `${this.name} gained 10 experience points!`;
-  }
-}
-
-class Race extends AnimalPokemon {
-  constructor(name, origin, population) {
-    super();
-    this.name = name;
-    this.origin = origin;
-    this.population = population;
-    this.language = "Elvish"; // Унікальна властивість для Раси
-    this._isEndangered = false; // Приватна властивість для Раси
-  }
-
-  growPopulation() {
-    this.population += 100;
-    return `${this.name} population increased by 100!`;
-  }
-
-  migrate() {
-    return `${this.name} is migrating to a new land.`;
-  }
-
-  communicate() {
-    return `${this.name} speaks in ${this.language}.`;
-  }
-}
-
-// Приклад використання
-const lion = new Animal("Leo", 5, "Lion");
-console.log(lion.makeSound()); // Leo says Roar!
-console.log(lion.eatFood()); // Leo is eating.
-console.log(lion.sleep()); // Leo is sleeping now.
-console.log(lion.catchBall()); // Leo was caught with a ball!
-
-const pikachu = new Pokemon("Pikachu", 10, "Electric");
-console.log(pikachu.attack()); // Pikachu uses Quick Attack!
-console.log(pikachu.useAbility()); // Pikachu uses Thunderbolt!
-console.log(pikachu.train()); // Pikachu gained 10 experience points!
-console.log(pikachu.catchBall()); // Pikachu was caught with a ball!
-
-const elf = new Race("Elrond", "Rivendell", 1000);
-console.log(elf.growPopulation()); // Elrond population increased by 100!
-console.log(elf.migrate()); // Elrond is migrating to a new land.
-console.log(elf.communicate()); // Elrond speaks in Elvish.
-console.log(elf.catchBall()); // Elrond was caught with a ball!
-*/
-
-// Клас Animal - базовий клас для усіх тварин
-class Animal {
-    #isAlive
-    constructor(name, age) {
-    this.name = name;
-    this.age = age;
-    this.#isAlive = true; // Приватна властивість, яка вказує, чи тварина жива
-  }
-
-  // Метод, що повертає інформацію про тварину
-  getInfo() {
-    return `Name: ${this.name}, Age: ${this.age}`;
-  }
-
-  // Метод, який змінює статус живої тварини
-  kill() {
-    this.#isAlive = false;
-    console.log(`${this.name} has died.`);
-  }
-
-  // Спільний метод, що виконує дію "їсти" для всіх тварин
-  eat() {
-    console.log(`${this.name} is eating.`);
-  }
-}
-
-// Клас Dog - клас для представлення собаки, успадковуємо Animal
-class Dog extends Animal {
-  constructor(name, age, breed) {
-    super(name, age);
-    this.breed = breed;
-  }
-
-  // Метод, що повертає інформацію про собаку та її породу
-  getInfo() {
-    return `${super.getInfo()}, Breed: ${this.breed}`;
-  }
-
-  // Метод, який виконує дію "гавкати" для собаки
-  bark() {
-    console.log(`${this.name} is barking.`);
-  }
-}
-
-// Клас Cat - клас для представлення кота, успадковуємо Animal
-class Cat extends Animal {
-  constructor(name, age, color) {
-    super(name, age);
-    this.color = color;
-  }
-
-  // Метод, що повертає інформацію про кота та його окрас
-  getInfo() {
-    return `${super.getInfo()}, Color: ${this.color}`;
-  }
-
-  // Метод, який виконує дію "присмикатися" для кота
-  purr() {
-    console.log(`${this.name} is purring.`);
-  }
-}
-
-// Клас Bird - клас для представлення птаха, успадковуємо Animal
-class Bird extends Animal {
-  constructor(name, age, species) {
-    super(name, age);
-    this.species = species;
-  }
-
-  // Метод, що повертає інформацію про птаха та його вид
-  getInfo() {
-    return `${super.getInfo()}, Species: ${this.species}`;
-  }
-
-  // Метод, який виконує дію "співати" для птаха
-  sing() {
-    console.log(`${this.name} is singing.`);
-  }
-}
-
-// Клас FlyingBird - клас для птахів, які можуть літати, успадковуємо Bird
-class FlyingBird extends Bird {
-  constructor(name, age, species, wingspan) {
-    super(name, age, species);
-    this.wingspan = wingspan;
-  }
-
-  // Метод, що повертає інформацію про птаха та розмах його крил
-  getInfo() {
-    return `${super.getInfo()}, Wingspan: ${this.wingspan} cm`;
-  }
-
-  // Спільний метод, що виконує дію "літати" для птахів, які можуть літати
-  fly() {
-    console.log(`${this.name} is flying.`);
-  }
-}
-
-// Приклад використання
-
-// Створюємо об'єкти-сутності тварин
-const dog = new Dog("Buddy", 3, "Golden Retriever");
-const cat = new Cat("Whiskers", 2, "Orange Tabby");
-const bird = new Bird("Bluey", 1, "Blue Jay");
-const flyingBird = new FlyingBird("Sparrow", 1, "House Sparrow", 15);
-
-// Використовуємо методи та властивості об'єктів
-console.log(dog.getInfo()); // Name: Buddy, Age: 3, Breed: Golden Retriever
-dog.bark(); // Buddy is barking.
-dog.eat(); // Buddy is eating.
-
-console.log(cat.getInfo()); // Name: Whiskers, Age: 2, Color: Orange Tabby
-cat.purr(); // Whiskers is purring.
-cat.eat(); // Whiskers is eating.
-
-console.log(bird.getInfo()); // Name: Bluey, Age: 1, Species: Blue Jay
-bird.sing(); // Bluey is singing.
-bird.eat(); // Bluey is eating.
-
-console.log(flyingBird.getInfo()); // Name: Sparrow, Age: 1, Species: House Sparrow, Wingspan: 15 cm
-flyingBird.fly(); // Sparrow is flying.
-flyingBird.eat(); // Sparrow is eating.
-
-// приватні властивості (#isAlive у класі "Animal") та приватні методи (#validateAccountNumber в прикладі customMap)
-// не підтримуються всіма браузерами та двигунами JavaScript
-// А якщо я напишу альтернативу, використавши змінні з префіксом "_" або "_private", щоб імітувати приватні властивості
-// Це не буде одне й те саме? 
-
-// в мене з'являється помилка SyntaxError: Private field '#isAlive' must be declared in an enclosing class
-// я почитав та зрозумів що її можна уникнути замінивши приватне поле #isAlive на просте поле isAlive, яке всеодно буде доступне тільки в межах класу "Animal", тому-що поля за замовчуванням мають обмежену видимість.
+// Зберігання стану гри під час перезавантаження сторінки
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("isGameOver", isGameOver);
+  localStorage.setItem("blocksEaten", blocksEaten.toString()); // Перетворюємо в строку перед зберіганням у localStorage
+  localStorage.setItem("maxBlocksEaten", maxBlocksEaten.toString()); // Перетворюємо в строку перед зберіганням у localStorage
+  localStorage.setItem("gameSpeed", gameSpeed.toString()); // Перетворюємо в строку перед зберіганням у localStorage
+});
