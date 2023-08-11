@@ -1,135 +1,127 @@
-// Реалізуйте наступну систему на прототипному успадкуванні:
-// 1. чотири класи для створення об'єктів-сутностей (це можуть бути тварини, покемони, раси і т.д. - проявіть фантазію)
-// 2. у кожного класу має бути мінімум 3 властивості та мінімум 3 методи(але можна й більше)
-// 3. у кожного класу має бути своя унікальна властивість
-// 4. у двох класів має бути спільний предок та спільний метод характерний тільки для них
-// 5. у всіх чотирьох класів має бути один (крім проміжних) клас-предок
+// 1. Є наступний код:
+/*
+console.log('start');
 
-// Функція Класу-предка Entity
-function Entity(name, type) {
-  this.name = name;
-  this.type = type;
-}
+const promise1 = new Promise((resolve, reject) => {
+console.log(1)
+resolve(2)
+})
 
-// Метод Класу-предка Entity
-Entity.prototype.sayHello = function () {
-  return `Привіт! Мене звуть ${this.name} і я ${this.type}.`;
-};
+promise1.then(res => {
+console.log(res)
+})
 
-// Клас Тварина
-function Animal(name, type, legs, sound) {
-  Entity.call(this, name, type);
-  this.legs = legs;
-  this.sound = sound;
-}
+console.log('end');
+*/
 
-// Наслідування прототипів для Класу Тварина від Entity
-Animal.prototype = Object.create(Entity.prototype);
-Animal.prototype.constructor = Animal;
+// Яким буде результат його виклику? Чому? Опишіть як працює цей код.
 
-// Методи для Класу Тварина
-Animal.prototype.makeSound = function () {
-  return `${this.name} видає звук: ${this.sound} ${this.sound} ${this.sound}...`;
-};
+/*
+Результат виклику: 
 
-Animal.prototype.countLegs = function () {
-  return `У ${this.name} ${this.legs} ноги.`;
-};
+start
+1
+end
+2
 
-// Унікальна властивість для класу Тварина
-Animal.prototype.hasTail = function (tailPresent) {
-  return tailPresent ? `${this.name} має хвіст.` : `${this.name} не має хвоста.`;
-};
+*/
+/*
 
-// Клас Покемон
-function Pokemon(name, type, ability, level) {
-  Entity.call(this, name, type);
-  this.ability = ability;
-  this.level = level;
-}
+1. console.log('start'); виводить рядок "start" в консоль.
 
-// Наслідування прототипів для Класу Покемон від Entity
-Pokemon.prototype = Object.create(Entity.prototype);
-Pokemon.prototype.constructor = Pokemon;
+2.  Створюється об'єкт обіцянка (Promise) promise1. 
+    В конструктор обіцянки передається функція з двома аргументами: resolve та reject. 
+    resolve - це функція, яка викликається, коли обіцянка успішно виконана. 
+    reject - це функція, яка викликається, коли обіцянка відхиляється. 
+    В середині цієї функції відбувається виведення рядка "1" у консоль та виклик функції resolve(2). 
+    Це означає, що обіцянка promise1 буде виконана із результатом 2.
 
-// Методи для Класу Покемон
-Pokemon.prototype.useAbility = function () {
-  return `${this.name} використовує свою здатність "${this.ability}"!`;
-};
+3.  promise1.then(res => { console.log(res) }); - ця конструкція називається ланцюжком обробки. 
+    Вона говорить про те, що коли обіцянка promise1 буде виконана (у нашому випадку буде виконана відразу), 
+    функція (res => { console.log(res) }) буде викликана з результатом обіцянки (який у нас дорівнює 2). 
+    Таким чином, в консоль буде виведено "2".
 
-Pokemon.prototype.checkLevel = function () {
-  return `${this.name} на рівні ${this.level}.`;
-};
+4. console.log('end'); виводить рядок "end" в консоль.
+*/
 
-// Унікальна властивість для класу Покемон
-Pokemon.prototype.isLegendary = function (legendary) {
-  return legendary ? `${this.name} - легендарний покемон!` : `${this.name} - звичайний покемон.`;
-};
+// 2. Є наступний код:
+/*
+Promise.resolve(1)
+		.then((x) => x + 1)
+		.then((x) => { throw new Error('My Error') })
+		.catch(() => 1)
+		.then((x) => x + 1)
+		.then((x) => console.log(x))
+		.catch(console.error)
+*/
 
-// Клас Раса
-function Race(name, type, language, culture) {
-  Entity.call(this, name, type);
-  this.language = language;
-  this.culture = culture;
-}
+// Яким буде результат його виклику? Чому? Опишіть як працює цей код.
 
-// Наслідування прототипів для Класу Раса від Entity
-Race.prototype = Object.create(Entity.prototype);
-Race.prototype.constructor = Race;
+/*
+Результат виклику: 
 
-// Методи для Класу Раса
-Race.prototype.speakLanguage = function () {
-  return `${this.name} говорить мовою ${this.language}.`;
-};
+2
 
-Race.prototype.describeCulture = function () {
-  return `Культура ${this.name} відрізняється ${this.culture}.`;
-};
+*/
+/*
 
-// Унікальна властивість для класу Раса
-Race.prototype.hasMagicPowers = function (magic) {
-  return magic ? `${this.name} володіє магічними здібностями!` : `${this.name} не володіє магією.`;
-};
+1. Створюється обіцянка зі значенням 1.
 
-// Клас-потомок, який об'єднує Покемон та Тварина
-function Hybrid(name, type, hybridProperty) {
-  Entity.call(this, name, type);
-  this.hybridProperty = hybridProperty;
-}
+2. Перший then приймає це значення 1 та додає до нього 1, (1 + 1 = 2) і передає далі. 
 
-// Наслідування прототипів для Класу Hybrid від Entity
-Hybrid.prototype = Object.create(Entity.prototype);
-Hybrid.prototype.constructor = Hybrid;
+3. Другий then отримує значення 2, але потім спрацьовує помилка throw new Error('My Error').
 
-// Метод, спільний тільки для класу Hybrid
-Hybrid.prototype.displayHybridProperty = function () {
-  return `${this.name} має особливу властивість: ${this.hybridProperty}.`;
-};
+4. Призначений для цього catch перехоплює помилку, але не повертає жодного значення.
 
-// Створюємо об'єкти для кожного класу
-const dog = new Animal('Барсік', 'собака', 4, 'гав');
-const cat = new Animal('Мурзик', 'кіт', 4, 'мяу');
-const pikachu = new Pokemon('Пікачу', 'електричний', 'Електрошок', 15);
-const bulbasaur = new Pokemon('Бульбазавр', 'травяний', 'Рослинний бій', 12);
-const elf = new Race('Ельф', 'фантастична раса', 'елфійською', 'високими вушками');
-const orc = new Race('Орк', 'фантастична раса', 'оркською', 'любов','ями до бою');
-const hybridCreature = new Hybrid('Гібридус', 'гібрид', 'здатний змінювати форму');
+5. Наступний then отримує значення, яке не було змінено попередніми обробниками, але тут відбувається додавання 1 до нього (1 + 1 = 2) і передається далі.
 
-// Виклики методів та вивід властивостей
-console.log(dog.sayHello());
-console.log(dog.makeSound());
-console.log(dog.countLegs());
-console.log(dog.hasTail(true));
+6. Останній then отримує значення 2, яке передавалося попереднім обробником, і виводить його в консоль.
+*/
 
-console.log(pikachu.sayHello());
-console.log(pikachu.useAbility());
-console.log(pikachu.checkLevel());
-console.log(pikachu.isLegendary(false));
+// 3. Є наступний код:
+/*
+const promise = new Promise(res => res(2)); 
+	promise.then(v => {
+	        console.log(v);
+	        return v * 2;
+	    })
+	    .then(v => {
+	        console.log(v);
+	        return v * 2;
+	    })
+	    .finally(v => {
+	        console.log(v);
+	        return v * 2;
+	    })
+	    .then(v => {
+	        console.log(v);
+	    });
+*/
 
-console.log(elf.sayHello());
-console.log(elf.speakLanguage());
-console.log(elf.describeCulture());
-console.log(elf.hasMagicPowers(true));
+// Яким буде результат його виклику? Чому? Опишіть як працює цей код.
 
-console.log(hybridCreature.sayHello());
-console.log(hybridCreature.displayHybridProperty());
+/*
+Результат виклику: 
+
+2
+4
+undefined
+8
+
+*/
+/*
+
+1. Створюється об'єкт promise за допомогою конструктора Promise, і йому передається функція, яка викликає res(2) - це означає, що обіцянка (promise) виконається зі значенням 2.
+
+2. Потім додається обробник до обіцянки за допомогою .then(). У цьому обробнику виводиться значення 2, а потім повертається результат обчислення v * 2, тобто 4.
+
+3. Далі до отриманої попередньої обіцянки (яка має значення 4) додається ще один обробник через .then(). 
+   У цьому обробнику виводиться значення 4, а потім повертається результат обчислення v * 2, тобто знову 8.
+
+4. Використання методу .finally() виконується незалежно від того, чи обіцянка успішно виконалася чи ні, і не отримує значення з попереднього обробника. 
+   Тому в консоль виводиться undefined.
+
+   Метод .finally() в даному випадку не впливає на значення, яке передається в наступний .then().
+
+5. Останній обробник .then() отримує значення 8 (з попереднього обробника) і виводить його в консоль.
+*/
