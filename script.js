@@ -3,19 +3,21 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// Розмір одного блоку та розміри полотна
 const gridSize = 20;
 const canvasWidth = 720;
 const canvasHeight = 460;
 
-let snake = [{ x: 10, y: 10 }];
-let direction = "right";
-let food = generateFood();
-let isGameOver = false;
+let snake = [{ x: 10, y: 10 }]; // Початкова позиція змійки
+let direction = "right"; // Початковий напрямок руху
+let food = generateFood(); // Початкове розміщення їжі
+let isGameOver = false; // Прапорець, що вказує на завершення гри
 let blocksEaten = 0; // Лічильник з'їдених блоків
 const speedIncrement = 5; // Значення, на яке зростає швидкість через кожні 5 поглинених блоків
 let gameSpeed = 100; // Default speed
 let maxBlocksEaten = 0; // Максимальний результат
 
+// Функція для малювання частини змійки
 function drawSnakePart(snakePart) {
   ctx.fillStyle = "green";
   ctx.fillRect(snakePart.x * gridSize, snakePart.y * gridSize, gridSize, gridSize);
@@ -23,11 +25,13 @@ function drawSnakePart(snakePart) {
   ctx.strokeRect(snakePart.x * gridSize, snakePart.y * gridSize, gridSize, gridSize);
 }
 
+// Функція для малювання їжі
 function drawFood() {
   ctx.fillStyle = "red";
   ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
 }
 
+// Генерація нової позиції для їжі
 function generateFood() {
   let newFood;
   do {
@@ -39,6 +43,7 @@ function generateFood() {
   return newFood;
 }
 
+// Перевірка на зіткнення
 function checkCollision() {
   const head = snake[0];
   if (head.x < 0 || head.x >= canvasWidth / gridSize || head.y < 0 || head.y >= canvasHeight / gridSize) {
@@ -54,6 +59,7 @@ function checkCollision() {
   return false;
 }
 
+// Функція для оновлення гри
 function update() {
   if (isGameOver) return;
 
@@ -94,6 +100,7 @@ function update() {
 
   snake.unshift(head);
 
+  // Логіка при з'їдені їжі
   if (head.x === food.x && head.y === food.y) {
     food = generateFood();
     blocksEaten++;
@@ -126,6 +133,7 @@ function update() {
   setTimeout(update, gameSpeed); // Затримка виклику для заданої швидкості
 }
 
+// Обробник події натискання клавіші
 document.addEventListener("keydown", (event) => {
   if (isGameOver) return;
 
@@ -146,6 +154,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+// Функція показу модального вікна завершення гри
 function showGameOverModal() {
   const gameOverModal = document.getElementById("gameOver");
   gameOverModal.classList.remove("hidden");
@@ -159,6 +168,7 @@ function resetGameValues() {
   updateSpeedDisplay(); // Оновлюємо відображення швидкості на екрані
 }
 
+// Функція для перезапуску гри
 function restartGame() {
   const gameOverModal = document.getElementById("gameOver");
   gameOverModal.classList.add("hidden");
