@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Змійка на JavaScript</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <canvas id="gameCanvas" width="720" height="460"></canvas>
+    <div id="gameOver" class="hidden">
+      <h2>GAME OVER</h2>
+      <p>Щоб почати гру, натисніть на ігрове поле.</p>
+    </div>
+    <!-- Додано лічильник з'їдених блоків -->
+    <p id="blocksEatenDisplay">З'їдено блоків: 0</p>
+    <!-- Додано лічильник поточної швидкості -->
+    <p id="speedDisplay">Швидкість: 100</p>
+    <!-- Додано лічильник максимального результату -->
+    <p id="maxBlocksEatenDisplay">Максимальний результат: 0</p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
